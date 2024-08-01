@@ -1,4 +1,4 @@
-![Screenshot 2024-08-01 171301](https://github.com/user-attachments/assets/bf671338-ea81-41b3-9bb8-9140dcdc562d)
+
 T Jaya Keerthan Reddy
 CT08DS5163
 Cyber Security And Ethical Hacking
@@ -21,3 +21,4 @@ Method: Inject scripts into web pages to see if they execute in other users' bro
 Insecure Authentication Mechanisms:
 Goal: Evaluate the robustness of the application's authentication processes.
 Method: Test for weaknesses such as weak passwords, lack of multi-factor authentication, and vulnerabilities in session management to ensure that unauthorized access cannot be easily gained.![Screenshot 2024-08-01 170155](https://github.com/user-attachments/assets/b464850d-8edb-4e64-bf5b-0671582deebb)
+![Screenshot 2024-08-01 171301](https://github.com/user-attachments/assets/bf671338-ea81-41b3-9bb8-9140dcdc562d)
